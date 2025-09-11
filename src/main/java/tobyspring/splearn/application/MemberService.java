@@ -1,6 +1,7 @@
 package tobyspring.splearn.application;
 
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -15,8 +16,8 @@ import tobyspring.splearn.domain.MemberRegisterRequest;
 import tobyspring.splearn.domain.PasswordEncoder;
 
 @Service
-@Transactional
 @Validated
+@Transactional
 @RequiredArgsConstructor
 public class MemberService implements MemberRegister {
     private final MemberRepository memberRepository;
@@ -35,6 +36,16 @@ public class MemberService implements MemberRegister {
 
         return member;
     }
+
+	@Override
+	public Member activate(Long memberId) {
+		Member member = memberRepository.findById(memberId)
+				.orElseThrow(() -> new IllegalArgumentException("회원을 찾을 수 없습니다. id: " + memberId));
+
+		member.activate();
+
+		return memberRepository.save(member);
+	}
 
 	private void sendWelcomeEmail(Member member) {
 		emailSender.send(member.getEmail(), "등록을 완료해주세요", "아래 링크를 클릭해서 등록을 완료해주세요.");

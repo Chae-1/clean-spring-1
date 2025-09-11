@@ -1,6 +1,8 @@
 spring:
   application:
     name: splearn
+  jpa:
+    show-sql: true
   datasource:
     url: jdbc:mysql://localhost:11000/splearn?encrypt=false
     username: spring
