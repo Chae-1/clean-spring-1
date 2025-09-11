@@ -3,7 +3,7 @@ package tobyspring.splearn.domain;
 public class MemberFixture {
 
     public static MemberRegisterRequest createMemberRegisterRequest(String email) {
-        return new MemberRegisterRequest(email, "hyeongil", "secret");
+        return new MemberRegisterRequest(email, "hyeongil", "verysecret");
     }
 
     public static MemberRegisterRequest createMemberRegisterRequest() {
