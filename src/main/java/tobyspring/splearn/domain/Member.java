@@ -1,20 +1,19 @@
 package tobyspring.splearn.domain;
 
 import static java.util.Objects.requireNonNull;
-import static org.springframework.util.Assert.*;
+import static org.springframework.util.Assert.state;
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.EnumType;
-
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import lombok.AccessLevel;
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.NaturalIdCache;
 

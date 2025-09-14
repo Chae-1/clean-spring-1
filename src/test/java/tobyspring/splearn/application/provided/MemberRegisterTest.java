@@ -1,15 +1,14 @@
 package tobyspring.splearn.application.provided;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import jakarta.persistence.EntityManager;
+import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.Transactional;
-
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ConstraintViolationException;
 import tobyspring.splearn.SplearnTestConfiguration;
 import tobyspring.splearn.domain.DuplicateEmailException;
 import tobyspring.splearn.domain.Member;
@@ -20,7 +19,7 @@ import tobyspring.splearn.domain.MemberStatus;
 @SpringBootTest
 @Transactional
 @Import(SplearnTestConfiguration.class)
-public record MemberRegisterTest(MemberRegister memberRegister, EntityManager entityManager) {
+record MemberRegisterTest(MemberRegister memberRegister, EntityManager entityManager) {
 
 	@Test
 	void register() {
@@ -52,12 +51,12 @@ public record MemberRegisterTest(MemberRegister memberRegister, EntityManager en
 
 	@Test
 	void memberRegisterFail() {
-		extracted(new MemberRegisterRequest("coguddlf@gmail.com", "nick", "eese1234"));
-		extracted(new MemberRegisterRequest("coguddlf@gmail", "nick55", "eese124"));
-		extracted(new MemberRegisterRequest("coguddlf", "nick5555", "eese123234"));
+		checkValidation(new MemberRegisterRequest("coguddlf@gmail.com", "nick", "eese1234"));
+		checkValidation(new MemberRegisterRequest("coguddlf@gmail", "nick55", "eese124"));
+		checkValidation(new MemberRegisterRequest("coguddlf", "nick5555", "eese123234"));
 	}
 
-	private void extracted(MemberRegisterRequest invalid) {
+	private void checkValidation(MemberRegisterRequest invalid) {
 		assertThatThrownBy(() -> memberRegister.register(invalid))
 			.isInstanceOf(ConstraintViolationException.class);
 	}

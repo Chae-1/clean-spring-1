@@ -1,13 +1,22 @@
 package tobyspring.splearn;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
+import org.springframework.boot.SpringApplication;
 
-@SpringBootTest
 class SplearnApplicationTests {
 
     @Test
-    void contextLoads() {
+    void run() {
+        try (MockedStatic<SpringApplication> mock = Mockito.mockStatic(SpringApplication.class)) {
+
+            SplearnApplication.main(new String[0]);
+
+            mock.verify(() -> {
+                SpringApplication.run(SplearnApplication.class);
+            });
+        }
     }
 
 }
