@@ -3,6 +3,8 @@ spring:
     name: splearn
   jpa:
     show-sql: true
+    hibernate:
+      ddl-auto: update
   datasource:
     url: jdbc:mysql://localhost:11000/splearn?encrypt=false
     username: spring
