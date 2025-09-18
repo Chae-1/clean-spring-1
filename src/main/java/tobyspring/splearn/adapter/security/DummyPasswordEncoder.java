@@ -2,7 +2,7 @@ package tobyspring.splearn.adapter.security;
 
 import org.springframework.context.annotation.Fallback;
 import org.springframework.stereotype.Component;
-import tobyspring.splearn.domain.PasswordEncoder;
+import tobyspring.splearn.domain.member.PasswordEncoder;
 
 @Component
 @Fallback

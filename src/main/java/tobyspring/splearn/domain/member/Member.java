@@ -1,28 +1,25 @@
-package tobyspring.splearn.domain;
+package tobyspring.splearn.domain.member;
 
 import static java.util.Objects.requireNonNull;
 import static org.springframework.util.Assert.state;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import tobyspring.splearn.domain.shared.AbstractEntity;
+import tobyspring.splearn.domain.shared.Email;
+
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.NaturalIdCache;
 
 @Entity
 @Getter
-@ToString
+@ToString(callSuper = true, exclude = {"detail"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @NaturalIdCache
 public class Member extends AbstractEntity {
@@ -36,6 +33,10 @@ public class Member extends AbstractEntity {
 
     private MemberStatus status;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private MemberDetail detail;
+
+
     public static Member register(MemberRegisterRequest createRequest, PasswordEncoder passwordEncoder) {
         Member member = new Member();
 
@@ -45,6 +46,8 @@ public class Member extends AbstractEntity {
 
         member.status = MemberStatus.PENDING;
 
+        member.detail = MemberDetail.create();
+
         return member;
     }
 
@@ -52,6 +55,7 @@ public class Member extends AbstractEntity {
         state(status == MemberStatus.PENDING, "PENDING 상태가 아닙니다.");
 
         this.status = MemberStatus.ACTIVE;
+        this.detail.activate();
     }
 
     public void deactivate() {
